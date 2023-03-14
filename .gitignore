@@ -1,0 +1,30 @@
+# Rust artifacts
+**/target/
+
+# Generated documentation
+**/doc/
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# Build and test artifacts
+**/*.rs.bk
+**/*.rlib
+**/*.rmeta
+**/*.rmeta.d
+**/*.lock
+**/build/
+**/Cargo.lock
+**/Cargo.toml.orig
+
+# Logs
+log/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
