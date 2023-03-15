@@ -1,3 +1,7 @@
+mod providers;
+mod models;
+mod commands;
+
 use teloxide::prelude::*;
 use dotenv::dotenv;
 use std::env;
@@ -20,3 +24,4 @@ async fn main() {
     })
     .await;
 }
+ 

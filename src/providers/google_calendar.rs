@@ -1,54 +1,44 @@
-use crate::models::event::Event;
-use crate::provider::Provider;
-use google_calendar3::{Event as GoogleEvent, GoogleCalendarHub};
+use crate::models::{Event, Provider};
+use google_calendar3::{CalendarHub};
 use std::error::Error;
+use yup_oauth2::InstalledFlowAuthenticator;
 
 pub struct GoogleCalendar {
-    hub: GoogleCalendarHub,
+    calendar_hub: CalendarHub,
+    calendar_id: String,
 }
 
 impl GoogleCalendar {
-    pub fn new(client_secret_path: &str, token_path: &str) -> Result<GoogleCalendar, Box<dyn Error>> {
-        // Create a new Google Calendar API client using the client secret and token paths
-        let hub = GoogleCalendarHub::new(
-            hyper::Client::builder().build(hyper_tls::HttpsConnector::new()?),
-            yup_oauth2::read_client_secret(client_secret_path)?,
-            yup_oauth2::read_token_from_file(token_path).ok(),
-        );
+    pub async fn new(credentials: &str, calendar_id: &str) -> Result<Self, Box<dyn Error>> {
+        let secrets = yup_oauth2::read_application_secret(credentials.as_bytes())?;
+        let auth = InstalledFlowAuthenticator::builder(secrets, yup_oauth2::InstalledFlowReturnMethod::HTTPRedirect)
+            .build()
+            .await?;
 
-        Ok(GoogleCalendar { hub })
+        let client = hyper::Client::builder().build(hyper_rustls::HttpsConnector::with_native_roots());
+        let calendar_hub = CalendarHub::new(client, auth);
+
+        Ok(Self {
+            calendar_hub,
+            calendar_id: calendar_id.to_string(),
+        })
     }
 }
 
 impl Provider for GoogleCalendar {
     fn get_events(&self) -> Result<Vec<Event>, Box<dyn Error>> {
-        // Call the Google Calendar API to get the list of events
-        // ...
-
-        Ok(Vec::new())
+        self.list_events()
     }
 
     fn get_event(&self, event_id: String) -> Result<Event, Box<dyn Error>> {
-        // Call the Google Calendar API to get the event with the specified ID
-        // ...
-
-        Ok(Event::default())
+        // Implement the method to fetch a single event from Google Calendar
     }
 
     fn add_event(&self, event: Event) -> Result<(), Box<dyn Error>> {
-        // Convert the `Event` object to a `GoogleEvent` object
-        let google_event = GoogleEvent::default();
-
-        // Call the Google Calendar API to add the event
-        // ...
-
         Ok(())
     }
 
     fn delete_event(&self, event_id: String) -> Result<(), Box<dyn Error>> {
-        // Call the Google Calendar API to delete the event with the specified ID
-        // ...
-
         Ok(())
     }
 }

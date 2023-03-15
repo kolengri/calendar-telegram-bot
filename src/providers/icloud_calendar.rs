@@ -1,6 +1,5 @@
-use crate::models::event::Event;
-use crate::provider::Provider;
-use reqwest::header::{HeaderValue, USER_AGENT};
+use crate::models::{Provider, Event};
+use reqwest::header::HeaderValue;
 use reqwest::Client;
 use std::error::Error;
 
