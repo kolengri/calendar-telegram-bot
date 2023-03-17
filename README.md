@@ -10,6 +10,7 @@ telegram_calendar_bot
 ├── README.md
 ├── src
 │ ├── main.rs
+│ ├── bot.rs
 │ ├── commands
 │ │ ├── add_event.rs
 │ │ ├── delete_event.rs
@@ -24,8 +25,6 @@ telegram_calendar_bot
 │ │ └── icloud_calendar.rs
 │ ├── utils
 │ │ └── mod.rs
-│ ├── bot.rs
-│ └── main.rs
 ```
 
 ## Prerequisites
